@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Ejercicio 21 - Validación de formularios</title>
+
+    <style type="text/css">
+        body {font-family: arial, helvetica;}
+        form {
+            width: 600px;
+            margin: 20px auto 0 auto;
+        }
+        label {
+            float: left;
+            width: 200px;
+            font-weight: bold;
+        }
+        label[for="registro_condiciones"] {
+            float: none;
+        }
+        input[type="text"],
+        input[type="password"],
+        textarea {
+            width: 360px;
+        }
+        input[type="checkbox"] {
+            margin-left: 200px;
+        }
+        input[type="submit"] {
+            margin: 20px 0 0 200px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="servidor.php" method="POST" id="registro">
+        <fieldset>
+            <legend>Registro</legend>
+            <label for="registro_nombre">Nombre:</label><input type="text" name="nombre" id="registro_nombre">
+            <label for="registro_apellidos">Apellido:</label><input type="text" name="apellido" id="registro_apellido">
+            <label for="registro_email">Email:</label><input type="text" name "email" id="registro_email">
+            <label for="registro_password">Password:</label><input type="password" name="password" id="registro_password">
+            <label for="registro_comentarios">Comentarios:</label><textarea name="comentarios" id="registro_comentarios" rows="10"></textarea>
+            <input type="checkbox" name="condiciones" id="registro_condiciones" value="1"><label for="registro_condiciones">Acepto las condiciones del servicio.</label>
+            <input type="submit" value="Enviar">
+        </fieldset>
+    </form>
+
+    <script type="text/javascript">
+        var formulario = document.getElementById("registro");
+
+        formulario.addEventListener("submit", function (event) {
+            if (!validarFormulario()) {
+                event.preventDefault();
+            }
+        });
+
+        function validarFormulario() {
+            var nombre = document.getElementById("registro_nombre").value.trim();
+            var apellido = document.getElementById("registro_apellido").value.trim();
+            var email = document.getElementById("registro_email").value.trim();
+            var password = document.getElementById("registro_password").value;
+            var comentarios = document.getElementById("registro_comentarios").value;
+            var condiciones = document.getElementById("registro_condiciones").checked;
+
+            if (!nombre || !apellido || !email || !password || !comentarios || !condiciones) {
+                alert("Todos los campos son obligatorios");
+                return false;
+            }
+
+            if (!validarEmail(email)) {
+                alert("El email no es válido");
+                return false;
+            }
+
+            if (comentarios.length > 50) {
+                alert("Los comentarios no pueden exceder los 50 caracteres");
+                return false;
+            }
+
+            if (!validarPassword(password)) {
+                alert("El password debe tener una longitud mínima de 6 caracteres, contener al menos una letra minúscula, una letra mayúscula y un dígito.");
+                return false;
+            }
+
+            return true;
+        }
+
+        function validarEmail(email) {
+            // Expresión regular para validar una dirección de email
+            var regex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+            return regex.test(email);
+        }
+
+        function validarPassword(password) {
+            // Expresión regular para validar el password
+            var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+            return regex.test(password);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lanzamiento de Dados</title>
+</head>
+<body>
+    <h1>Simulación de Lanzamiento de Dados</h1>
+    <p>Haz clic en el botón para simular el lanzamiento de dos dados 36,000 veces y contar las sumas.</p>
+    <button id="simularLanzamiento">Simular Lanzamiento</button>
+
+    <h2>Resultados:</h2>
+    <table>
+        <tr>
+            <th>Suma</th>
+            <th>Apariciones</th>
+        </tr>
+    </table>
+
+    <script>
+        document.getElementById("simularLanzamiento").addEventListener("click", function () {
+            var resultados = new Array(13).fill(0); // Un array para almacenar las apariciones de las sumas (del 2 al 12)
+            var numLanzamientos = 36000;
+
+            for (var i = 0; i < numLanzamientos; i++) {
+                var dado1 = Math.floor(Math.random() * 6) + 1; // Número aleatorio entre 1 y 6
+                var dado2 = Math.floor(Math.random() * 6) + 1;
+                var suma = dado1 + dado2;
+                resultados[suma]++;
+            }
+
+            var table = document.querySelector("table");
+
+            for (var i = 2; i <= 12; i++) {
+                var row = table.insertRow(-1);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                cell1.innerHTML = i;
+                cell2.innerHTML = resultados[i];
+            }
+        });
+    </script>
+</body>
+</html>
